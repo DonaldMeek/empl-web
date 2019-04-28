@@ -27,6 +27,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+	    <dependency>
+        	<groupId>com.meek.donald</groupId>
+			<artifactId>rs-common</artifactId>
+			<scope>system</scope>
+			<systemPath>file://home/users/donald/workspace/rs-common/target/rs-common-0.0.1-SNAPSHOT.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <properties>
