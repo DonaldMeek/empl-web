@@ -13,11 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.meek.donald.common.BaseServiceImpl;
 import com.meek.donald.common.SerializationUtil;
 import com.meek.donald.model.employee.EmployeeModel;
+import com.meek.donald.model.location.LocationModel;
 
 @Service
 public class EmployeeServiceImpl extends BaseServiceImpl 
@@ -25,7 +25,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 
 	RestTemplate restTemplate;
 	
-	public void insertEmployee(EmployeeModel employeeModel) throws JsonProcessingException {
+	public void insertEmployee(EmployeeModel employeeModel) 
+			throws JsonProcessingException {
 		
 		String employeeUrl = super.getBaseUrl() + super.getEmployeeUri();
 		ParameterizedTypeReference<HttpStatus> typeRef = 
@@ -43,8 +44,15 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	public EmployeeModel getEmployeeById(Integer emplId) throws IOException {
+		EmployeeModel emplModel = new EmployeeModel();
+		emplModel.setEmplid(emplId);
+		emplModel = getEmployeeById(emplModel);
+		return emplModel;
+	}
 	
-	public EmployeeModel getEmployeeByExample(EmployeeModel employeeModel) throws IOException {
+	public EmployeeModel getEmployeeByExample(EmployeeModel employeeModel) 
+			throws IOException {
 		
 		String employeeUrl = super.getBaseUrl() + super.getEmplIdUri();
 		String request = SerializationUtil.getJson(employeeModel);
@@ -83,4 +91,5 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 		return (EmployeeModel) SerializationUtil.getBean(
 				response.getBody(),EmployeeModel.class);
 	}
+
 }
