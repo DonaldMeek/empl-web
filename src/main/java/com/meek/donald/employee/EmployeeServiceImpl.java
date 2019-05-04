@@ -16,7 +16,9 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.meek.donald.common.BaseServiceImpl;
 import com.meek.donald.common.SerializationUtil;
+import com.meek.donald.model.employee.Employee;
 import com.meek.donald.model.employee.EmployeeModel;
+import com.meek.donald.model.employee.EmployeeTransformer;
 import com.meek.donald.model.location.LocationModel;
 
 @Service
@@ -35,7 +37,9 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> requestEntity = 
-				new HttpEntity<String>(SerializationUtil.getJson(employeeModel), headers);
+				new HttpEntity<String>(SerializationUtil.getJson(
+							EmployeeTransformer.transformEmployeeModel(employeeModel)), 
+						headers);
 		restTemplate = new RestTemplate();
 		ResponseEntity<HttpStatus> response = restTemplate.exchange(
 				employeeUrl, HttpMethod.POST,requestEntity, typeRef);
@@ -45,9 +49,10 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 		}
 	}
 	public EmployeeModel getEmployeeById(Integer emplId) throws IOException {
-		EmployeeModel emplModel = new EmployeeModel();
-		emplModel.setEmplid(emplId);
-		emplModel = getEmployeeById(emplModel);
+		Employee empl = new Employee();
+		EmployeeModel emplModel = null;
+		empl.setEmplid(emplId);
+		emplModel = getEmployeeById(empl);
 		return emplModel;
 	}
 	
@@ -72,10 +77,10 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 				response.getBody(),EmployeeModel.class);
 	}
 	
-	public EmployeeModel getEmployeeById(EmployeeModel emplModel) throws IOException {
-		
+	public EmployeeModel getEmployeeById(Employee empl) throws IOException {
+		Employee emplResponse;
 		String employeeUrl = super.getBaseUrl() + super.getEmplIdUri();
-		String request = SerializationUtil.getJson(emplModel);
+		String request = SerializationUtil.getJson(empl);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -88,8 +93,9 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 			throw new HttpServerErrorException(
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return (EmployeeModel) SerializationUtil.getBean(
-				response.getBody(),EmployeeModel.class);
+		emplResponse = (Employee) SerializationUtil.getBean(
+				response.getBody(),Employee.class);
+		return EmployeeTransformer.transformEmployee(emplResponse);
 	}
 
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.meek.donald.location.LocationService;
 import com.meek.donald.location.OfficeService;
 import com.meek.donald.model.employee.EmployeeModel;
+import com.meek.donald.model.employee.EmployeeTransformer;
 import com.meek.donald.model.location.LocationModel;
 import com.meek.donald.model.location.OfficeModel;
 import com.meek.donald.model.projects.ProjectModel;
@@ -62,7 +63,8 @@ public class EmployeeController {
 	@PostMapping(value="/employee/id", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public EmployeeModel getEmployeeById(@RequestBody EmployeeModel emplModel) {		
 		try {
-			return emplService.getEmployeeById(emplModel);
+			return emplService.getEmployeeById(
+					EmployeeTransformer.transformEmployeeModel(emplModel));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
