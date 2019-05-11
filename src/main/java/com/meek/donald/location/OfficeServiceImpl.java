@@ -38,11 +38,7 @@ public class OfficeServiceImpl extends BaseServiceImpl
 				new HttpEntity<String>(officeByLocIdRequest, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				officeLocIdUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		validateServiceResponse(response);
 		locationOfOffices = (LocationModel) SerializationUtil.getBean(
 				response.getBody(),LocationModel.class);
 		offices = locationOfOffices.getLocationOffices();
@@ -62,11 +58,7 @@ public class OfficeServiceImpl extends BaseServiceImpl
 				new HttpEntity<String>(officeByLocIdRequest, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				officeLocExampleUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		validateServiceResponse(response);
 		locationResult = (LocationModel) SerializationUtil.getBean(
 				response.getBody(), LocationModel.class);
 		offices = locationResult.getLocationOffices();
@@ -79,18 +71,14 @@ public class OfficeServiceImpl extends BaseServiceImpl
 		OfficeModel officeModel;
 		String officeEmplByManagerIdUrl = 
 				super.getBaseUrl() + super.getOfficeEmplByManagerIdUri();
-		String emplOfficeIdRequest = SerializationUtil.getJson(manager);
+		String officeEmplMgrIdRequest = SerializationUtil.getJson(manager);
 		HttpHeaders headers = new HttpHeaders();
 		headers = super.getDefaultHttpRequestHeaders();
 		HttpEntity<String> requestEntity = 
-				new HttpEntity<String>(emplOfficeIdRequest, headers);
+				new HttpEntity<String>(officeEmplMgrIdRequest, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				officeEmplByManagerIdUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		validateServiceResponse(response);
 		officeModel = (OfficeModel) SerializationUtil.getBean(
 				response.getBody(),OfficeModel.class);
 		officeEmplsByManagerId = officeModel.getOfficeEmployeesIndexedByManagerId();
@@ -108,11 +96,7 @@ public class OfficeServiceImpl extends BaseServiceImpl
 				new HttpEntity<String>(emplOfficeIdRequest, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				employeeOfficeIdUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		validateServiceResponse(response);
 		officeModel = (OfficeModel) SerializationUtil.getBean(
 				response.getBody(),OfficeModel.class);
 		emplList = officeModel.getOfficeEmployees();
@@ -123,18 +107,14 @@ public class OfficeServiceImpl extends BaseServiceImpl
 			throws IOException {
 		OfficeModel officeModel;
 		String officeEmployeeIdUrl = super.getBaseUrl() + super.getOfficeEmplIdUri();
-		String emplOfficeIdRequest = SerializationUtil.getJson(emplModel);
+		String officeEmplIdRequest = SerializationUtil.getJson(emplModel);
 		HttpHeaders headers = new HttpHeaders();
 		headers = super.getDefaultHttpRequestHeaders();
 		HttpEntity<String> requestEntity = 
-				new HttpEntity<String>(emplOfficeIdRequest, headers);
+				new HttpEntity<String>(officeEmplIdRequest, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				officeEmployeeIdUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		validateServiceResponse(response);
 		officeModel = (OfficeModel) SerializationUtil.getBean(
 				response.getBody(),OfficeModel.class);
 		return officeModel;

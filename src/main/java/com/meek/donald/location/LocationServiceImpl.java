@@ -28,18 +28,14 @@ public class LocationServiceImpl extends BaseServiceImpl
 			throws IOException {
 		EmployeeModel employee;
 		String emplLocIdUrl = super.getBaseUrl() + super.getEmplByLocExampleUri();
-		String officeByLocIdRequest = SerializationUtil.getJson(locModel);
+		String emplByLocRequest = SerializationUtil.getJson(locModel);
 		HttpHeaders headers = new HttpHeaders();
 		headers = super.getDefaultHttpRequestHeaders();
 		HttpEntity<String> requestEntity = 
-				new HttpEntity<String>(officeByLocIdRequest, headers);
+				new HttpEntity<String>(emplByLocRequest, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				emplLocIdUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		validateServiceResponse(response);
 		employee = (EmployeeModel) SerializationUtil.getBean(
 				response.getBody(),EmployeeModel.class);
 		return employee;
@@ -50,18 +46,14 @@ public class LocationServiceImpl extends BaseServiceImpl
 			throws IOException {
 		EmployeeModel employee;
 		String emplLocIdUrl = super.getBaseUrl() + super.getEmplLocIdUri();
-		String officeByLocIdRequest = SerializationUtil.getJson(locModel);
+		String emplByLocIdRequest = SerializationUtil.getJson(locModel);
 		HttpHeaders headers = new HttpHeaders();
 		headers = super.getDefaultHttpRequestHeaders();
 		HttpEntity<String> requestEntity = 
-				new HttpEntity<String>(officeByLocIdRequest, headers);
+				new HttpEntity<String>(emplByLocIdRequest, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				emplLocIdUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		validateServiceResponse(response);
 		employee = (EmployeeModel) SerializationUtil.getBean(
 				response.getBody(),EmployeeModel.class);
 		return employee;
@@ -79,11 +71,7 @@ public class LocationServiceImpl extends BaseServiceImpl
 				new HttpEntity<String>(officeByLocIdRequest, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				officeLocIdUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		validateServiceResponse(response);
 		office = (OfficeModel) SerializationUtil.getBean(
 				response.getBody(),OfficeModel.class);
 		return office;

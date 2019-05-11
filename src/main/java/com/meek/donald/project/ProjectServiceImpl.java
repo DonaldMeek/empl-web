@@ -29,18 +29,14 @@ public class ProjectServiceImpl extends BaseServiceImpl
 		ProjectModel project;
 		String projectEmplIdsUrl = super.getBaseUrl() + 
 				super.getProjectEmplIdsUri();
-		String officeByLocIdRequest = SerializationUtil.getJson(projModel);
+		String projRequestModel = SerializationUtil.getJson(projModel);
 		HttpHeaders headers = new HttpHeaders();
 		headers = super.getDefaultHttpRequestHeaders();
 		HttpEntity<String> requestEntity = 
-				new HttpEntity<String>(officeByLocIdRequest, headers);
+				new HttpEntity<String>(projRequestModel, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				projectEmplIdsUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		super.validateServiceResponse(response);
 		project = (ProjectModel) SerializationUtil.getBean(
 				response.getBody(),ProjectModel.class);
 		emplIds = project.getProjectEmplIds();
@@ -51,19 +47,15 @@ public class ProjectServiceImpl extends BaseServiceImpl
 		OfficeModel office;
 		String officeByProjectExampleUrl = super.getBaseUrl() + 
 				super.getOfficeByProjectExampleUri();
-		String officeByLocIdRequest = SerializationUtil.getJson(projModel);
+		String officeByProjExampleRequest = SerializationUtil.getJson(projModel);
 		HttpHeaders headers = new HttpHeaders();
 		headers = super.getDefaultHttpRequestHeaders();
 		HttpEntity<String> requestEntity = 
-				new HttpEntity<String>(officeByLocIdRequest, headers);
+				new HttpEntity<String>(officeByProjExampleRequest, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				officeByProjectExampleUrl, HttpMethod.POST, requestEntity, 
 				String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		super.validateServiceResponse(response);
 		office = (OfficeModel) SerializationUtil.getBean(
 				response.getBody(),OfficeModel.class);
 		return office;
@@ -79,11 +71,7 @@ public class ProjectServiceImpl extends BaseServiceImpl
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				allActiveProjectUrl, HttpMethod.POST, requestEntity, 
 				String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		super.validateServiceResponse(response);
 		return (ProjectModel) SerializationUtil.getBean(
 				response.getBody(),ProjectModel.class);
 	}

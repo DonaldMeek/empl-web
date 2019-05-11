@@ -19,7 +19,6 @@ import com.meek.donald.common.SerializationUtil;
 import com.meek.donald.model.employee.Employee;
 import com.meek.donald.model.employee.EmployeeModel;
 import com.meek.donald.model.employee.EmployeeTransformer;
-import com.meek.donald.model.location.LocationModel;
 
 @Service
 public class EmployeeServiceImpl extends BaseServiceImpl 
@@ -41,9 +40,10 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 							EmployeeTransformer.transformEmployeeModel(employeeModel)), 
 						headers);
 		restTemplate = new RestTemplate();
-		ResponseEntity<HttpStatus> response = restTemplate.exchange(
+		ResponseEntity<HttpStatus> serviceResponse = restTemplate.exchange(
 				employeeUrl, HttpMethod.POST,requestEntity, typeRef);
-		if (response != null && !response.getStatusCode().equals(HttpStatus.OK)) {
+		if (serviceResponse == null || 
+				!serviceResponse.getStatusCode().equals(HttpStatus.OK)) {
 			throw new HttpServerErrorException(
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -68,11 +68,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 				new HttpEntity<String>(request, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				employeeUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		super.validateServiceResponse(response);
 		return (EmployeeModel) SerializationUtil.getBean(
 				response.getBody(),EmployeeModel.class);
 	}
@@ -88,11 +84,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl
 				new HttpEntity<String>(request, headers);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				employeeUrl, HttpMethod.POST, requestEntity, String.class);
-		if (response == null || 
-				!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new HttpServerErrorException(
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		super.validateServiceResponse(response);
 		emplResponse = (Employee) SerializationUtil.getBean(
 				response.getBody(),Employee.class);
 		return EmployeeTransformer.transformEmployee(emplResponse);
