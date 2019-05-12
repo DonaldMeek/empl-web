@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.meek.donald.model.employee.EmployeeModel;
 import com.meek.donald.model.employee.ManagerModel;
 import com.meek.donald.model.location.LocationModel;
@@ -21,4 +20,9 @@ public interface OfficeService {
 			 throws IOException;
 	 OfficeModel getOfficeByEmplId(EmployeeModel emplModel)
 			 throws IOException;
+	 OfficeModel getOfficeById(String officeId) 
+				throws IOException;
+	 OfficeModel getOfficeById(Integer officeId) 
+			 throws IOException;
+
 }

@@ -1,18 +1,12 @@
 package com.meek.donald.location;
 
 import java.io.IOException;
-import java.util.List;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.meek.donald.common.BaseServiceImpl;
 import com.meek.donald.common.SerializationUtil;
 import com.meek.donald.model.employee.EmployeeModel;

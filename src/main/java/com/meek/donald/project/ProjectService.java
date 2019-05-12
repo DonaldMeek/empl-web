@@ -15,4 +15,6 @@ public interface ProjectService {
 			throws IOException;
 	ProjectModel getAllActiveProjects()
 			throws IOException;
+	ProjectModel getProjectByExample(ProjectModel projModel) 
+			throws IOException;
 }
